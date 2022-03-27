@@ -271,13 +271,13 @@ BST::Node** BST::find_parrent(int value)
     Node** pnt_to_parent;
     auto pnt_standin = root;
     queue.push_back(pnt_standin);
+    std::cout << "parent has problems" << std::endl;
     if (root->value == value) {
         // is root ;doesnt have parents
         return 0;
     }
     while (true) {
         // visited.push_back(queue[0]->value);
-        std::cout << "in queue[0] kharabe?" << std::endl;
         std::cout << queue[0] << std::endl;
         std::cout << queue[0]->value << std::endl;
         pnt_to_parent = new Node*(queue[0]);
@@ -288,7 +288,7 @@ BST::Node** BST::find_parrent(int value)
             queue.push_back(pnt_standin->left);
             if (pnt_standin->left->value == value) {
                 pnt_to_parent = new Node*(pnt_standin);
-                std::cout << "pointer to parent we returned" << pnt_to_parent << (*pnt_to_parent)->value << std::endl;
+                std::cout << "pointer to parent we returned" << pnt_to_parent << "    " << (*pnt_to_parent)->value << std::endl;
                 return pnt_to_parent;
             }
         }
@@ -400,10 +400,41 @@ bool BST::delete_node(int value)
         return false;
     }
 
-    // //has two childs
-    // if ((*pointer_got_from_findnode)->right != nullptr && (*pointer_got_from_findnode)->left != nullptr) {
-    //     /* code */
-    // }
+    // has two childs
+    if ((*pointer_got_from_findnode)->right != nullptr && (*pointer_got_from_findnode)->left != nullptr) {
+        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
+        BST::Node** pointer_to_successor { this->find_successor(value) };
+        if ((*pointer_we_got_parents)->left != nullptr) {
+            if ((*pointer_we_got_parents)->left->value == value) {
+                // node is on the left of the parent thus we should assign the left pointer of the parrent to the successor
+                auto child_on_the_left { (*pointer_got_from_findnode)->left };
+                auto child_on_the_right { (*pointer_got_from_findnode)->right };
+                // if child on the left is == to value?
+
+                BST::Node** pointer_we_got_parents_to_successor { this->find_parrent((*pointer_to_successor)->value) };
+                delete *pointer_got_from_findnode;
+                // std::cout << "parent of successor" << (*pointer_we_got_parents_to_successor)->value << std::cout;
+                (*pointer_we_got_parents)->left = *pointer_to_successor;
+
+                (*pointer_to_successor)->left = child_on_the_left;
+
+                (*pointer_to_successor)->right = child_on_the_right;
+                std::cout << "in moshkele?2" << std::endl;
+                // inja segmentation dari midi
+
+                (*pointer_we_got_parents_to_successor)->right = nullptr;
+                std::cout << "info on the deleted stuff" << (*pointer_to_successor)->value << (*pointer_to_successor)->right->value << (*pointer_to_successor)->left->value << std::endl;
+                std::cout << "child on the left" << child_on_the_left << std::endl;
+                std::cout << "child on the right" << child_on_the_right << std::endl;
+                return 1;
+            }
+        }
+        if ((*pointer_we_got_parents)->right != nullptr) {
+            if ((*pointer_we_got_parents)->right->value == value) {
+                // node is on the right of the parent thus we should assign the right pointer of the parent to the successor
+            }
+        }
+    }
     // has one child
     if ((*pointer_got_from_findnode)->right != nullptr || (*pointer_got_from_findnode)->left != nullptr) {
         // whether the child is on the right side or left side
@@ -412,9 +443,22 @@ bool BST::delete_node(int value)
         if ((*pointer_got_from_findnode)->right != nullptr) {
             // child is on the right
             std::cout << "in moshkele?1" << std::endl;
+            if ((*pointer_we_got_parents)->left != nullptr) {
+                std::cout << "in moshkele?2" << std::endl;
+                if ((*pointer_we_got_parents)->left->value == value) {
+                    // the node we want to delete is on the left side of the parent
+                    // child on the right and the node on the left of the parent
+                    std::cout << "the node we want to delete is on the left side of the parent" << std::endl;
+                    auto pointer_to_child { (*pointer_got_from_findnode)->right };
+                    delete *pointer_got_from_findnode;
+                    (*pointer_we_got_parents)->left = pointer_to_child;
+                    return 1;
+                }
+            }
             if ((*pointer_we_got_parents)->right != nullptr) {
                 if ((*pointer_we_got_parents)->right->value == value) {
                     // the node we want to delete is on the right side of the parent
+                    // child is on the right and the node on the right of the parent
                     std::cout << "the node we want to delete is on the right side of the parent" << std::endl;
                     auto pointer_to_child { (*pointer_got_from_findnode)->right };
                     delete *pointer_got_from_findnode;
@@ -428,11 +472,22 @@ bool BST::delete_node(int value)
                 std::cout << "in moshkele?2" << std::endl;
                 if ((*pointer_we_got_parents)->left->value == value) {
                     // the node we want to delete is on the left side of the parent
+                    // child on the left and the node on the left of the parent
                     std::cout << "the node we want to delete is on the left side of the parent" << std::endl;
                     auto pointer_to_child { (*pointer_got_from_findnode)->left };
                     delete *pointer_got_from_findnode;
                     (*pointer_we_got_parents)->left = pointer_to_child;
                     return 1;
+                }
+            }
+            if ((*pointer_we_got_parents)->right != nullptr) {
+                if ((*pointer_we_got_parents)->right->value == value) {
+                    // the node we want to delete is on the right side of the parent
+                    // child is on the left and the node on the right side of the parent
+                    std::cout << "the node we want to delete is on the right side of the parent" << std::endl;
+                    auto pointer_to_child { (*pointer_got_from_findnode)->left };
+                    delete *pointer_got_from_findnode;
+                    (*pointer_we_got_parents)->right = pointer_to_child;
                 }
             }
         }

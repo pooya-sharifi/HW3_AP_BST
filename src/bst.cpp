@@ -107,7 +107,6 @@ void BST::bfs(std::function<void(BST::Node*& node)> func)
     std::cout << "inja miyad?";
 
     while (queue.size() != 0 && queue[0] != nullptr) {
-        std::cout << "hi" << std::endl;
         visited.push_back(queue[0]->value);
         func(queue[0]);
         queue.erase(queue.begin());
@@ -152,6 +151,7 @@ size_t BST::length()
             queue.push_back(pnt_standin->right);
         }
         if (queue.size() == 0) {
+            std::cout << "the lenght we measured:" << i + 1 << std::endl;
             return i + 1;
         }
         i++;
@@ -230,9 +230,12 @@ BST::Node** BST::find_node(int value)
     queue.push_back(pnt_standin);
     std::cout << "root q" << queue[0] << std::endl;
     while (true) {
+
         visited.push_back(queue[0]->value);
         if (queue[0]->value == value) {
-            std::cout << "oomad too if?" << value << queue[0]->value << queue[0]->left->value << queue[0]->right->value << std::endl;
+            std::cout << "hi" << std::endl;
+            // std::cout << "oomad too if?" << value << queue[0]->value << queue[0]->left->value << queue[0]->right->value << std::endl;
+            std::cout << "hi" << std::endl;
             auto pnt_ret = new Node*(queue[0]);
             return pnt_ret;
         }
@@ -285,15 +288,15 @@ BST::Node** BST::find_parrent(int value)
             queue.push_back(pnt_standin->left);
             if (pnt_standin->left->value == value) {
                 pnt_to_parent = new Node*(pnt_standin);
+                std::cout << "pointer to parent we returned" << pnt_to_parent << (*pnt_to_parent)->value << std::endl;
+                return pnt_to_parent;
             }
         }
         if (pnt_standin->right != nullptr) {
-            std::cout << "check the right kid" << pnt_standin->right << std::endl;
             queue.push_back(pnt_standin->right);
-            std::cout << "khers khers hezar khers" << pnt_standin->right->value << value << std::endl;
             if (pnt_standin->right->value == value) {
-                std::cout << "vaghti tooye 10 im bayad biyad inja" << pnt_standin->right << std::endl;
                 pnt_to_parent = new Node*(pnt_standin);
+                std::cout << "pointer to parent we returned" << pnt_to_parent << (*pnt_to_parent)->value << std::endl;
                 return pnt_to_parent;
             }
         }
@@ -389,18 +392,70 @@ BST& BST::operator=(const BST& bst)
     root = bst.root;
     return *this;
 }
-// bool BST::delete_node(int value)
-// {
-//     BST::Node** pointer_got_from_findnode { this->find_node(value) };
-//     // has two childs
-//     if (pnt_standin->right != nullptr && pnt_standin->left != nullptr) {
-//         /* code */
-//     }
-//     // has one child
-//     if (pnt_standin->right != nullptr || pnt_standin->left != nullptr) {
-//         /* code */
-//     }
-//     if (pnt_standin->right == nullptr && pnt_standin->left == nullptr) {
-//         /* code */
-//     }
-// }
+bool BST::delete_node(int value)
+{
+    BST::Node** pointer_got_from_findnode { this->find_node(value) };
+    // node not found
+    if (pointer_got_from_findnode == nullptr) {
+        return false;
+    }
+
+    // //has two childs
+    // if ((*pointer_got_from_findnode)->right != nullptr && (*pointer_got_from_findnode)->left != nullptr) {
+    //     /* code */
+    // }
+    // has one child
+    if ((*pointer_got_from_findnode)->right != nullptr || (*pointer_got_from_findnode)->left != nullptr) {
+        // whether the child is on the right side or left side
+        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
+
+        if ((*pointer_got_from_findnode)->right != nullptr) {
+            // child is on the right
+            std::cout << "in moshkele?1" << std::endl;
+            if ((*pointer_we_got_parents)->right != nullptr) {
+                if ((*pointer_we_got_parents)->right->value == value) {
+                    // the node we want to delete is on the right side of the parent
+                    std::cout << "the node we want to delete is on the right side of the parent" << std::endl;
+                    auto pointer_to_child { (*pointer_got_from_findnode)->right };
+                    delete *pointer_got_from_findnode;
+                    (*pointer_we_got_parents)->right = pointer_to_child;
+                }
+            }
+        } else {
+            // the child is on the left
+            std::cout << (*pointer_we_got_parents)->left->value << std::endl;
+            if ((*pointer_we_got_parents)->left != nullptr) {
+                std::cout << "in moshkele?2" << std::endl;
+                if ((*pointer_we_got_parents)->left->value == value) {
+                    // the node we want to delete is on the left side of the parent
+                    std::cout << "the node we want to delete is on the left side of the parent" << std::endl;
+                    auto pointer_to_child { (*pointer_got_from_findnode)->left };
+                    delete *pointer_got_from_findnode;
+                    (*pointer_we_got_parents)->left = pointer_to_child;
+                    return 1;
+                }
+            }
+        }
+    }
+    // has no child
+    if ((*pointer_got_from_findnode)->right == nullptr && (*pointer_got_from_findnode)->left == nullptr) {
+        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
+        std::cout << "value ha " << value << (*pointer_we_got_parents)->right->value << std::endl;
+        if ((*pointer_we_got_parents)->right != nullptr) {
+            if ((*pointer_we_got_parents)->right->value == value) {
+                std::cout << "in moshkele?2" << std::endl;
+                delete *pointer_got_from_findnode;
+                (*pointer_we_got_parents)->right = nullptr;
+            }
+        }
+        if ((*pointer_we_got_parents)->left != nullptr) {
+            if ((*pointer_we_got_parents)->left->value == value) {
+                std::cout << "in moshkele?1" << std::endl;
+                delete *pointer_got_from_findnode;
+                (*pointer_we_got_parents)->left = nullptr;
+            }
+        }
+
+        return 1;
+    }
+}

@@ -31,8 +31,8 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
     value = node.value;
     std::cout << "value" << value << std::endl;
     if (node.left != nullptr || node.left != 0) {
-        left = new Node(*node.left);
-        // left = node.left;
+        left = new Node();
+        *left = *node.left;
         std::cout << "@@@@@@@@@@ left" << std::endl;
     }
     if (node.right != nullptr || node.right != 0) {
@@ -449,6 +449,16 @@ BST::Node** BST::find_successor(int value)
     //     pnt_standin = queue[0];
     // }
 }
+BST::BST(std::initializer_list<int> list)
+{
+    BST bst {};
+    for (auto element : list) {
+        bst.add_node(element);
+    }
+    root = new BST::Node();
+    *root = *bst.root;
+    std::cout << *this << bst << std::endl;
+}
 BST::~BST()
 {
     std::vector<Node*> nodes;
@@ -464,45 +474,24 @@ BST::BST(const BST& bst)
     // delete temp.root;
     root = new BST::Node();
     *root = *bst.root;
-    std::cout << "copy constructor of bst" << std::endl;
-    std::cout << root->value << std::endl;
-}
-// aslan motmarn nistam ino
-const BST& BST::operator=(const BST& bst)
-{
-    std::cout << "operator =" << std::endl;
-    if (this == &bst) {
-        return *this;
-    }
-
-    std::cout << bst << std::endl;
-    delete root;
-    // root = nullptr;
-    // root? new chi?
+    ///////another way
     // std::vector<Node*> queue_for_bst;
     // std::vector<Node*> queue_for_root;
-    root = new Node();
-    *root = *bst.root;
+
     // root = bst.root;
-    // root = new BST::Node(*bst.root);
-    // // auto root_standin { root };
     // queue_for_root.push_back(root);
-    // // root = bst.root;
-    // // std::cout << root << *root << &root << "     " << bst.root << *(bst.root) << root->left << bst.root->left << std::endl;
-    // // *(root->right) = *(bst.root->right);
-    // // *(root->right->right) = *(bst.root->right->right);
-    // // delete root->left;
-    // // auto bst_root_standin { bst.root };
-    // // std::cout << "operator =" << std::endl;
     // queue_for_bst.push_back(bst.root);
-    // while (true) {
+
+    // while (queue_for_bst.size() != 0) {
     //     std::cout << "another cycle" << std::endl;
     //     // delete (queue_for_root[0]->right->right->right);
     //     if (queue_for_bst[0]->right != nullptr) {
     //         std::cout << "miyad inja 1?" << std::endl;
     //         std::cout << queue_for_bst[0]->right->value << std::endl;
     //         std::cout << queue_for_root[0]->right->value << std::endl;
-    //         (queue_for_root[0]->right) = new Node(*(queue_for_bst[0]->right));
+    //         // delete (queue_for_root[0]->right);
+    //         // (queue_for_root[0]->right) = new Node();
+    //         (queue_for_root[0]->right) = (queue_for_bst[0]->right);
 
     //         std::cout << "miyad inja 2?" << std::endl;
     //         // root->right = new Node(*(bst.root->right));
@@ -511,7 +500,9 @@ const BST& BST::operator=(const BST& bst)
     //         queue_for_root.push_back(queue_for_root[0]->right);
     //     }
     //     if (queue_for_bst[0]->left != nullptr) {
-    //         queue_for_root[0]->left = new Node(*(queue_for_bst[0]->left));
+    //         // delete (queue_for_root[0]->left);
+    //         // (queue_for_root[0]->left) = new Node();
+    //         queue_for_root[0]->left = (queue_for_bst[0]->left);
     //         std::cout << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
     //         // root->right = new Node(*(bst.root->right));
     //         queue_for_bst.push_back(queue_for_bst[0]->left);
@@ -523,17 +514,119 @@ const BST& BST::operator=(const BST& bst)
     //     std::cout << "baad az earase" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
     //     queue_for_root.erase(queue_for_root.begin());
     //     std::cout << "baad az earase" << queue_for_root[0]->value << "   " << queue_for_root.size() << std::endl;
-    //     if (queue_for_bst.size() == 0) {
+    // }
+    // std::cout << "copy constructor of bst" << std::endl;
+    // std::cout << root->value << std::endl;
+}
+
+// aslan motmarn nistam ino
+const BST& BST::operator=(const BST& bst)
+{
+    std::cout << "operator =" << std::endl;
+    if (this == &bst) {
+        return *this;
+    }
+
+    std::cout << bst << std::endl;
+    delete root;
+    // // root = nullptr;
+    // // root? new chi?
+    // std::vector<Node*> queue_for_bst;
+    // std::vector<Node*> queue_for_root;
+    root = new Node();
+    *root = *bst.root;
+    // root = bst.root;
+    // // root = new BST::Node(*bst.root);
+    // // // auto root_standin { root };
+    // queue_for_root.push_back(root);
+    // // // std::cout << "operator =" << std::endl;
+    // queue_for_bst.push_back(bst.root);
+    // while (true) {
+    //     std::cout << "another cycle" << std::endl;
+    //     // delete (queue_for_root[0]->right->right->right);
+    //     if (queue_for_bst[0]->right != nullptr) {
+    //         std::cout << "miyad inja 1?" << std::endl;
+    //         std::cout << queue_for_bst[0]->right->value << std::endl;
+    //         std::cout << queue_for_root[0]->right->value << std::endl;
+    //         // delete (queue_for_root[0]->right);
+    //         // (queue_for_root[0]->right) = new Node();
+    //         (queue_for_root[0]->right) = (queue_for_bst[0]->right);
+
+    //         std::cout << "miyad inja 2?" << std::endl;
+    //         // root->right = new Node(*(bst.root->right));
+    //         std::cout << "value bst aval 0baad rightesh" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << "  " << (queue_for_bst[0]->right)->value << std::endl;
+    //         queue_for_bst.push_back(queue_for_bst[0]->right);
+    //         queue_for_root.push_back(queue_for_root[0]->right);
+    //     }
+    // if (queue_for_bst[0]->left != nullptr) {
+    //     // (queue_for_root[0]->left) = new Node();
+    //     queue_for_root[0]->left = (queue_for_bst[0]->left);
+    //     std::cout << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
+    //     // root->right = new Node(*(bst.root->right));
+    //     queue_for_bst.push_back(queue_for_bst[0]->left);
+    //     queue_for_root.push_back(queue_for_root[0]->left);
+    // }
+
+    // std::cout << queue_for_bst[0] << "   " << queue_for_bst.size() << std::endl;
+    // queue_for_bst.erase(queue_for_bst.begin());
+    // std::cout << "baad az earase" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
+    // queue_for_root.erase(queue_for_root.begin());
+    // std::cout << "baad az earase" << queue_for_root[0]->value << "   " << queue_for_root.size() << std::endl;
+    // if (queue_for_bst.size() == 0) {
     std::cout << bst.root << *bst.root << std::endl;
     std::cout << root << *root << std::endl;
     std::cout << *this << std::endl;
     std::cout << bst << std::endl;
     return *this;
-    //  }
-    //}
+    //     }
+    // }
 
     // root = bst.root;
 }
+BST::BST(BST&& bst)
+{
+    std::cout << "move constructor" << std::endl;
+    root = std::move(bst.root);
+    bst.root = nullptr;
+}
+const BST& BST::operator=(BST&& bst)
+{
+    std::cout << "move constructor =" << std::endl;
+    root = std::move(bst.root);
+    bst.root = nullptr;
+    return *this;
+}
+const BST& BST::operator++() const
+{
+    std::cout << "operator ++ left" << std::endl;
+
+    std::vector<Node*> queue;
+    std::vector<int> visited;
+    auto pnt_standin = root;
+    queue.push_back(pnt_standin);
+    while (true) {
+        queue[0]->value = (queue[0]->value) + 1;
+
+        queue.erase(queue.begin());
+        if (pnt_standin->left != nullptr) {
+            queue.push_back(pnt_standin->left);
+        }
+        if (pnt_standin->right != nullptr) {
+            queue.push_back(pnt_standin->right);
+        }
+        if (queue.size() == 0) {
+            return *this;
+        }
+        pnt_standin = queue[0];
+    }
+}
+// const BST BST::operator++(int) const
+// {
+//     std::cout << "operator ++ right" << std::endl;
+//     Vector _v { *this };
+//     ++*this;
+//     return _v;
+// }
 bool BST::delete_node(int value)
 {
     BST::Node** pointer_got_from_findnode { this->find_node(value) };

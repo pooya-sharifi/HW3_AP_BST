@@ -17,12 +17,31 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
 {
     std::cout << "operator = of node" << std::endl;
     // delete value;
-    delete left;
-    delete right;
+    std::cout << "operator = of node" << left << right << std::endl;
+    if (left != nullptr) {
+        std::cout << "delete left" << std::endl;
+        delete left;
+    }
+    if (right != nullptr) {
+        std::cout << "delete right" << std::endl;
+        delete right;
+    }
+
     // root? new chi?
     value = node.value;
-    left = node.left;
-    right = node.right;
+    std::cout << "value" << value << std::endl;
+    if (node.left != nullptr || node.left != 0) {
+        left = new Node(*node.left);
+        // left = node.left;
+        std::cout << "@@@@@@@@@@ left" << std::endl;
+    }
+    if (node.right != nullptr || node.right != 0) {
+        right = new Node();
+        std::cout << *node.right << std::endl;
+        *right = *node.right;
+        std::cout << "@@@@@@@@ right" << std::endl;
+    }
+
     return *this;
 }
 
@@ -134,20 +153,16 @@ size_t BST::length()
     queue.push_back(pnt_standin);
     while (true) {
 
-        std::cout << "BOOOOM" << i << std::endl;
         visited.push_back(queue[0]->value);
-        std::cout << "PAWWWWW" << i << std::endl;
         std::cout << queue[0] << std::endl;
         std::cout << queue[0]->value << std::endl;
         queue.erase(queue.begin());
         std::cout << "visited:" << visited[i] << std::endl;
 
         if (pnt_standin->left != nullptr) {
-            std::cout << "goosfand biya inja dige" << std::endl;
             queue.push_back(pnt_standin->left);
         }
         if (pnt_standin->right != nullptr) {
-            std::cout << "goosfand biya inja dige" << std::endl;
             queue.push_back(pnt_standin->right);
         }
         if (queue.size() == 0) {
@@ -223,89 +238,155 @@ std::ostream& operator<<(std::ostream& os, const BST& bst)
 }
 BST::Node** BST::find_node(int value)
 {
-    std::vector<Node*> queue;
-    std::vector<int> visited;
-    size_t i = 0;
-    auto pnt_standin = root;
-    queue.push_back(pnt_standin);
-    std::cout << "root q" << queue[0] << std::endl;
+    Node* pnt_use { root };
     while (true) {
-
-        visited.push_back(queue[0]->value);
-        if (queue[0]->value == value) {
-            std::cout << "hi" << std::endl;
-            // std::cout << "oomad too if?" << value << queue[0]->value << queue[0]->left->value << queue[0]->right->value << std::endl;
-            std::cout << "hi" << std::endl;
-            auto pnt_ret = new Node*(queue[0]);
+        std::cout << pnt_use->value << value << std::endl;
+        if (pnt_use->value == value) {
+            std::cout << "miyad inja?" << std::endl;
+            auto pnt_ret = new Node*(pnt_use);
             return pnt_ret;
         }
-
-        // std::cout << queue[0] << std::endl;
-        // std::cout << queue[0]->value << std::endl;
-        queue.erase(queue.begin());
-        // std::cout << "visited:" << visited[i] << std::endl;
-
-        if (pnt_standin->left != nullptr) {
-            queue.push_back(pnt_standin->left);
+        if (pnt_use->value < value) {
+            if (pnt_use->right != nullptr) {
+                std::cout << "mire right" << std::endl;
+                pnt_use = pnt_use->right;
+            } else {
+                auto pnt_ret = nullptr;
+                return pnt_ret;
+            }
         }
-        if (pnt_standin->right != nullptr) {
-            queue.push_back(pnt_standin->right);
-        }
-        if (queue.size() == 0) {
-            auto pnt_ret = nullptr;
-            return pnt_ret;
-        }
-        i++;
 
-        pnt_standin = queue[0];
-        // std::cout << queue[i] << std::endl;
-        // std::cout << queue[i]->value << std::endl;
-        // std::cout << visited[i] << std::endl;
+        if (pnt_use->value > value) {
+            if (pnt_use->left != nullptr) {
+                std::cout << "mire left" << std::endl;
+                pnt_use = pnt_use->left;
+            } else {
+                auto pnt_ret = nullptr;
+                return pnt_ret;
+            }
+        }
     }
+
+    // std::vector<Node*> queue;
+    // std::vector<int> visited;
+    // size_t i = 0;
+    // auto pnt_standin = root;
+    // queue.push_back(pnt_standin);
+    // std::cout << "root q" << queue[0] << std::endl;
+    // while (true) {
+
+    //     visited.push_back(queue[0]->value);
+    //     if (queue[0]->value == value) {
+    //         std::cout << "hi" << std::endl;
+    //         // std::cout << "oomad too if?" << value << queue[0]->value << queue[0]->left->value << queue[0]->right->value << std::endl;
+    //         std::cout << "hi" << std::endl;
+    //         auto pnt_ret = new Node*(queue[0]);
+    //         return pnt_ret;
+    //     }
+
+    //     // std::cout << queue[0] << std::endl;
+    //     // std::cout << queue[0]->value << std::endl;
+    //     queue.erase(queue.begin());
+    //     // std::cout << "visited:" << visited[i] << std::endl;
+
+    //     if (pnt_standin->left != nullptr) {
+    //         queue.push_back(pnt_standin->left);
+    //     }
+    //     if (pnt_standin->right != nullptr) {
+    //         queue.push_back(pnt_standin->right);
+    //     }
+    //     if (queue.size() == 0) {
+    //         auto pnt_ret = nullptr;
+    //         return pnt_ret;
+    //     }
+    //     i++;
+
+    //     pnt_standin = queue[0];
+    //     // std::cout << queue[i] << std::endl;
+    //     // std::cout << queue[i]->value << std::endl;
+    //     // std::cout << visited[i] << std::endl;
+    // }
 }
 BST::Node** BST::find_parrent(int value)
 {
-    // bebin mitooni ino ba find node bezani?
-    std::vector<Node*> queue;
-    std::vector<int> visited;
-    Node** pnt_to_parent;
-    auto pnt_standin = root;
-    queue.push_back(pnt_standin);
-    std::cout << "parent has problems" << std::endl;
+    Node* pnt_use { root };
+    Node* pnt_parent { nullptr };
     if (root->value == value) {
         // is root ;doesnt have parents
         return 0;
     }
     while (true) {
-        // visited.push_back(queue[0]->value);
-        std::cout << queue[0] << std::endl;
-        std::cout << queue[0]->value << std::endl;
-        pnt_to_parent = new Node*(queue[0]);
-        std::cout << (*pnt_to_parent)->value << std::endl;
-        queue.erase(queue.begin());
-        // std::cout << "visited:" << visited[i] << std::endl;
-        if (pnt_standin->left != nullptr) {
-            queue.push_back(pnt_standin->left);
-            if (pnt_standin->left->value == value) {
-                pnt_to_parent = new Node*(pnt_standin);
-                std::cout << "pointer to parent we returned" << pnt_to_parent << "    " << (*pnt_to_parent)->value << std::endl;
-                return pnt_to_parent;
+        std::cout << pnt_use->value << value << std::endl;
+        if (pnt_use->value == value) {
+            std::cout << "miyad inja?" << std::endl;
+            auto pnt_ret = new Node*(pnt_parent);
+            return pnt_ret;
+        }
+        if (pnt_use->value < value) {
+            if (pnt_use->right != nullptr) {
+                std::cout << "mire right" << std::endl;
+                pnt_parent = pnt_use;
+                pnt_use = pnt_use->right;
+            } else {
+                // auto pnt_ret = nullptr;
+                // return pnt_ret;
+                return 0;
             }
         }
-        if (pnt_standin->right != nullptr) {
-            queue.push_back(pnt_standin->right);
-            if (pnt_standin->right->value == value) {
-                pnt_to_parent = new Node*(pnt_standin);
-                std::cout << "pointer to parent we returned" << pnt_to_parent << (*pnt_to_parent)->value << std::endl;
-                return pnt_to_parent;
+
+        if (pnt_use->value > value) {
+            if (pnt_use->left != nullptr) {
+                std::cout << "mire left" << std::endl;
+                pnt_parent = pnt_use;
+                pnt_use = pnt_use->left;
+            } else {
+                // auto pnt_ret = nullptr;
+                // return pnt_ret;
+                return 0;
             }
         }
-        if (queue.size() == 0) {
-            // doesnt have parents
-            return 0;
-        }
-        // i++;
-        pnt_standin = queue[0];
+        // bebin mitooni ino ba find node bezani?
+        // std::vector<Node*> queue;
+        // std::vector<int> visited;
+        // Node** pnt_to_parent;
+        // auto pnt_standin = root;
+        // queue.push_back(pnt_standin);
+        // std::cout << "parent has problems" << std::endl;
+        // if (root->value == value) {
+        //     // is root ;doesnt have parents
+        //     return 0;
+        // }
+        // while (true) {
+        //     // visited.push_back(queue[0]->value);
+        //     std::cout << queue[0] << std::endl;
+        //     std::cout << queue[0]->value << std::endl;
+        //     pnt_to_parent = new Node*(queue[0]);
+        //     std::cout << (*pnt_to_parent)->value << std::endl;
+        //     queue.erase(queue.begin());
+        //     // std::cout << "visited:" << visited[i] << std::endl;
+        //     if (pnt_standin->left != nullptr) {
+        //         queue.push_back(pnt_standin->left);
+        //         if (pnt_standin->left->value == value) {
+        //             pnt_to_parent = new Node*(pnt_standin);
+        //             std::cout << "pointer to parent we returned" << pnt_to_parent << "    " << (*pnt_to_parent)->value << std::endl;
+        //             return pnt_to_parent;
+        //         }
+        //     }
+        //     if (pnt_standin->right != nullptr) {
+        //         queue.push_back(pnt_standin->right);
+        //         if (pnt_standin->right->value == value) {
+        //             pnt_to_parent = new Node*(pnt_standin);
+        //             std::cout << "pointer to parent we returned" << pnt_to_parent << (*pnt_to_parent)->value << std::endl;
+        //             return pnt_to_parent;
+        //         }
+        //     }
+        //     if (queue.size() == 0) {
+        //         // doesnt have parents
+        //         return 0;
+        //     }
+        //     // i++;
+        //     pnt_standin = queue[0];
+        // }
     }
 }
 BST::Node** BST::find_successor(int value)
@@ -377,20 +458,81 @@ BST::~BST()
     std::cout << "we did destruct" << std::endl;
 }
 BST::BST(const BST& bst)
-    : root { bst.root }
+// : root { bst.root }
 {
+    // BST temp;
+    // delete temp.root;
+    root = new BST::Node();
+    *root = *bst.root;
     std::cout << "copy constructor of bst" << std::endl;
     std::cout << root->value << std::endl;
 }
 // aslan motmarn nistam ino
-BST& BST::operator=(const BST& bst)
+const BST& BST::operator=(const BST& bst)
 {
     std::cout << "operator =" << std::endl;
+    if (this == &bst) {
+        return *this;
+    }
 
+    std::cout << bst << std::endl;
     delete root;
+    // root = nullptr;
     // root? new chi?
-    root = bst.root;
+    // std::vector<Node*> queue_for_bst;
+    // std::vector<Node*> queue_for_root;
+    root = new Node();
+    *root = *bst.root;
+    // root = bst.root;
+    // root = new BST::Node(*bst.root);
+    // // auto root_standin { root };
+    // queue_for_root.push_back(root);
+    // // root = bst.root;
+    // // std::cout << root << *root << &root << "     " << bst.root << *(bst.root) << root->left << bst.root->left << std::endl;
+    // // *(root->right) = *(bst.root->right);
+    // // *(root->right->right) = *(bst.root->right->right);
+    // // delete root->left;
+    // // auto bst_root_standin { bst.root };
+    // // std::cout << "operator =" << std::endl;
+    // queue_for_bst.push_back(bst.root);
+    // while (true) {
+    //     std::cout << "another cycle" << std::endl;
+    //     // delete (queue_for_root[0]->right->right->right);
+    //     if (queue_for_bst[0]->right != nullptr) {
+    //         std::cout << "miyad inja 1?" << std::endl;
+    //         std::cout << queue_for_bst[0]->right->value << std::endl;
+    //         std::cout << queue_for_root[0]->right->value << std::endl;
+    //         (queue_for_root[0]->right) = new Node(*(queue_for_bst[0]->right));
+
+    //         std::cout << "miyad inja 2?" << std::endl;
+    //         // root->right = new Node(*(bst.root->right));
+    //         std::cout << "value bst aval 0baad rightesh" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << "  " << (queue_for_bst[0]->right)->value << std::endl;
+    //         queue_for_bst.push_back(queue_for_bst[0]->right);
+    //         queue_for_root.push_back(queue_for_root[0]->right);
+    //     }
+    //     if (queue_for_bst[0]->left != nullptr) {
+    //         queue_for_root[0]->left = new Node(*(queue_for_bst[0]->left));
+    //         std::cout << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
+    //         // root->right = new Node(*(bst.root->right));
+    //         queue_for_bst.push_back(queue_for_bst[0]->left);
+    //         queue_for_root.push_back(queue_for_root[0]->left);
+    //     }
+
+    //     std::cout << queue_for_bst[0] << "   " << queue_for_bst.size() << std::endl;
+    //     queue_for_bst.erase(queue_for_bst.begin());
+    //     std::cout << "baad az earase" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
+    //     queue_for_root.erase(queue_for_root.begin());
+    //     std::cout << "baad az earase" << queue_for_root[0]->value << "   " << queue_for_root.size() << std::endl;
+    //     if (queue_for_bst.size() == 0) {
+    std::cout << bst.root << *bst.root << std::endl;
+    std::cout << root << *root << std::endl;
+    std::cout << *this << std::endl;
+    std::cout << bst << std::endl;
     return *this;
+    //  }
+    //}
+
+    // root = bst.root;
 }
 bool BST::delete_node(int value)
 {
@@ -404,20 +546,21 @@ bool BST::delete_node(int value)
     if ((*pointer_got_from_findnode)->right != nullptr && (*pointer_got_from_findnode)->left != nullptr) {
         BST::Node** pointer_we_got_parents { this->find_parrent(value) };
         BST::Node** pointer_to_successor { this->find_successor(value) };
+        auto child_on_the_left { (*pointer_got_from_findnode)->left };
+        auto child_on_the_right { (*pointer_got_from_findnode)->right };
+        BST::Node** pointer_we_got_parents_to_successor { this->find_parrent((*pointer_to_successor)->value) };
+
         if ((*pointer_we_got_parents)->left != nullptr) {
             if ((*pointer_we_got_parents)->left->value == value) {
                 // node is on the left of the parent thus we should assign the left pointer of the parrent to the successor
-                auto child_on_the_left { (*pointer_got_from_findnode)->left };
-                auto child_on_the_right { (*pointer_got_from_findnode)->right };
+
                 // if child on the left is == to value?
 
-                BST::Node** pointer_we_got_parents_to_successor { this->find_parrent((*pointer_to_successor)->value) };
                 delete *pointer_got_from_findnode;
                 // std::cout << "parent of successor" << (*pointer_we_got_parents_to_successor)->value << std::cout;
                 (*pointer_we_got_parents)->left = *pointer_to_successor;
 
                 (*pointer_to_successor)->left = child_on_the_left;
-
                 (*pointer_to_successor)->right = child_on_the_right;
                 std::cout << "in moshkele?2" << std::endl;
                 // inja segmentation dari midi
@@ -432,6 +575,16 @@ bool BST::delete_node(int value)
         if ((*pointer_we_got_parents)->right != nullptr) {
             if ((*pointer_we_got_parents)->right->value == value) {
                 // node is on the right of the parent thus we should assign the right pointer of the parent to the successor
+                delete *pointer_got_from_findnode;
+
+                (*pointer_we_got_parents)->right = *pointer_to_successor;
+
+                (*pointer_to_successor)->left = child_on_the_left;
+                (*pointer_to_successor)->right = child_on_the_right;
+
+                (*pointer_we_got_parents_to_successor)->right = nullptr;
+
+                return 1;
             }
         }
     }

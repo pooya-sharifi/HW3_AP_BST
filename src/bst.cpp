@@ -17,7 +17,6 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
 {
     std::cout << "operator = of node" << std::endl;
     // delete value;
-    std::cout << "operator = of node" << left << right << std::endl;
     if (left != nullptr) {
         std::cout << "delete left" << std::endl;
         delete left;
@@ -29,7 +28,6 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
 
     // root? new chi?
     value = node.value;
-    std::cout << "value" << value << std::endl;
     if (node.left != nullptr || node.left != 0) {
         left = new Node();
         *left = *node.left;
@@ -37,26 +35,12 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
     }
     if (node.right != nullptr || node.right != 0) {
         right = new Node();
-        std::cout << *node.right << std::endl;
         *right = *node.right;
         std::cout << "@@@@@@@@ right" << std::endl;
     }
 
     return *this;
 }
-
-// BST::Node*& BST::Node::operator=(const BST::Node*& node_pnt)
-// {
-//     std::cout << "operator = of node*" << std::endl;
-//     // delete value;
-//     delete left;
-//     delete right;
-//     // root? new chi?
-//     value = node_pnt->value;
-//     left = node_pnt->left;
-//     right = node_pnt->right;
-//     return this;
-// }
 
 std::ostream& operator<<(std::ostream& os, const BST::Node& node)
 {
@@ -74,20 +58,15 @@ bool BST::add_node(int _value)
     if (root == nullptr) {
         BST::Node khers1(_value, nullptr, nullptr);
         root = new Node(khers1);
-        std::cout << "poopy " << &khers1 << khers1 << root << *root << root->value << std::endl;
+        return 1;
 
     } else {
         BST::Node khers1(_value, nullptr, nullptr);
         while (true) {
-            // std::cout << "miyad tooye while" << std::endl;
             if (_value > pnt_new->value) {
-                // std::cout << "miyad tooye >" << std::endl;
-                // std::cout << "enter 1";
-                // pnt_new = (pnt_new->right);
-                std::cout << "adresse baade bozorgtar" << pnt_new << std::endl;
+
                 if (pnt_new->right == nullptr) {
                     pnt_new->right = new Node(khers1);
-                    // std::cout << "ina ro mikhaim check konim" << pnt_new << "****" << &khers1 << std::endl;
                     return 1;
                 }
                 pnt_new = pnt_new->right;
@@ -96,18 +75,13 @@ bool BST::add_node(int _value)
 
                 if (pnt_new->left == nullptr) {
                     pnt_new->left = new Node(khers1);
-                    // std::cout << "ina ro mikhaim check konim" << pnt_new << "****" << &khers1 << std::endl;
                     return 1;
                 }
                 pnt_new = pnt_new->left;
             } else {
-                std::cout << "miyad tooye else dige" << std::endl;
                 return false;
             }
         }
-
-        // std::cout << "new mikone" << std::endl;
-        // std::cout << "ina ro mikhaim check konim" << pnt_new << "****" << &khers1 << std::endl;
     }
     // root->left = new Node(khers1);
 }
@@ -122,8 +96,6 @@ void BST::bfs(std::function<void(BST::Node*& node)> func)
 
     queue.push_back(pnt_standin);
     // std::cout << "root q" << queue[0] << "      " << queue[0]->value << std::endl;
-
-    std::cout << "inja miyad?";
 
     while (queue.size() != 0 && queue[0] != nullptr) {
         visited.push_back(queue[0]->value);
@@ -154,7 +126,6 @@ size_t BST::length()
     while (true) {
 
         visited.push_back(queue[0]->value);
-        std::cout << queue[0] << std::endl;
         std::cout << queue[0]->value << std::endl;
         queue.erase(queue.begin());
         std::cout << "visited:" << visited[i] << std::endl;
@@ -171,9 +142,6 @@ size_t BST::length()
         }
         i++;
         pnt_standin = queue[0];
-        // std::cout << queue[i] << std::endl;
-        // std::cout << queue[i]->value << std::endl;
-        // std::cout << visited[i] << std::endl;
     }
 }
 std::ostream& operator<<(std::ostream& os, const BST& bst)
@@ -223,18 +191,14 @@ std::ostream& operator<<(std::ostream& os, const BST& bst)
         }
         if (queue.size() == 0) {
             os << "*******************************************************************************************" << std::endl;
-            std::cout << "ino mikham check konam" << bst.root->value << std::endl;
             return os;
             flag = 1;
         }
         i++;
-        // std::cout << "miyad ta inja**" << std::endl;
         pnt_standin = (queue[0]);
         os << std::endl;
-        // std::cout << queue[i] << std::endl;
-        // std::cout << queue[i]->value << std::endl;
-        // std::cout << visited[i] << std::endl;
     }
+    return os;
 }
 BST::Node** BST::find_node(int value)
 {
@@ -477,46 +441,6 @@ BST::BST(const BST& bst)
     ///////another way
     // std::vector<Node*> queue_for_bst;
     // std::vector<Node*> queue_for_root;
-
-    // root = bst.root;
-    // queue_for_root.push_back(root);
-    // queue_for_bst.push_back(bst.root);
-
-    // while (queue_for_bst.size() != 0) {
-    //     std::cout << "another cycle" << std::endl;
-    //     // delete (queue_for_root[0]->right->right->right);
-    //     if (queue_for_bst[0]->right != nullptr) {
-    //         std::cout << "miyad inja 1?" << std::endl;
-    //         std::cout << queue_for_bst[0]->right->value << std::endl;
-    //         std::cout << queue_for_root[0]->right->value << std::endl;
-    //         // delete (queue_for_root[0]->right);
-    //         // (queue_for_root[0]->right) = new Node();
-    //         (queue_for_root[0]->right) = (queue_for_bst[0]->right);
-
-    //         std::cout << "miyad inja 2?" << std::endl;
-    //         // root->right = new Node(*(bst.root->right));
-    //         std::cout << "value bst aval 0baad rightesh" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << "  " << (queue_for_bst[0]->right)->value << std::endl;
-    //         queue_for_bst.push_back(queue_for_bst[0]->right);
-    //         queue_for_root.push_back(queue_for_root[0]->right);
-    //     }
-    //     if (queue_for_bst[0]->left != nullptr) {
-    //         // delete (queue_for_root[0]->left);
-    //         // (queue_for_root[0]->left) = new Node();
-    //         queue_for_root[0]->left = (queue_for_bst[0]->left);
-    //         std::cout << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
-    //         // root->right = new Node(*(bst.root->right));
-    //         queue_for_bst.push_back(queue_for_bst[0]->left);
-    //         queue_for_root.push_back(queue_for_root[0]->left);
-    //     }
-
-    //     std::cout << queue_for_bst[0] << "   " << queue_for_bst.size() << std::endl;
-    //     queue_for_bst.erase(queue_for_bst.begin());
-    //     std::cout << "baad az earase" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
-    //     queue_for_root.erase(queue_for_root.begin());
-    //     std::cout << "baad az earase" << queue_for_root[0]->value << "   " << queue_for_root.size() << std::endl;
-    // }
-    // std::cout << "copy constructor of bst" << std::endl;
-    // std::cout << root->value << std::endl;
 }
 
 // aslan motmarn nistam ino
@@ -535,51 +459,12 @@ const BST& BST::operator=(const BST& bst)
     // std::vector<Node*> queue_for_root;
     root = new Node();
     *root = *bst.root;
-    // root = bst.root;
-    // // root = new BST::Node(*bst.root);
-    // // // auto root_standin { root };
-    // queue_for_root.push_back(root);
-    // // // std::cout << "operator =" << std::endl;
-    // queue_for_bst.push_back(bst.root);
-    // while (true) {
-    //     std::cout << "another cycle" << std::endl;
-    //     // delete (queue_for_root[0]->right->right->right);
-    //     if (queue_for_bst[0]->right != nullptr) {
-    //         std::cout << "miyad inja 1?" << std::endl;
-    //         std::cout << queue_for_bst[0]->right->value << std::endl;
-    //         std::cout << queue_for_root[0]->right->value << std::endl;
-    //         // delete (queue_for_root[0]->right);
-    //         // (queue_for_root[0]->right) = new Node();
-    //         (queue_for_root[0]->right) = (queue_for_bst[0]->right);
 
-    //         std::cout << "miyad inja 2?" << std::endl;
-    //         // root->right = new Node(*(bst.root->right));
-    //         std::cout << "value bst aval 0baad rightesh" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << "  " << (queue_for_bst[0]->right)->value << std::endl;
-    //         queue_for_bst.push_back(queue_for_bst[0]->right);
-    //         queue_for_root.push_back(queue_for_root[0]->right);
-    //     }
-    // if (queue_for_bst[0]->left != nullptr) {
-    //     // (queue_for_root[0]->left) = new Node();
-    //     queue_for_root[0]->left = (queue_for_bst[0]->left);
-    //     std::cout << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
-    //     // root->right = new Node(*(bst.root->right));
-    //     queue_for_bst.push_back(queue_for_bst[0]->left);
-    //     queue_for_root.push_back(queue_for_root[0]->left);
-    // }
-
-    // std::cout << queue_for_bst[0] << "   " << queue_for_bst.size() << std::endl;
-    // queue_for_bst.erase(queue_for_bst.begin());
-    // std::cout << "baad az earase" << queue_for_bst[0]->value << "   " << queue_for_bst.size() << std::endl;
-    // queue_for_root.erase(queue_for_root.begin());
-    // std::cout << "baad az earase" << queue_for_root[0]->value << "   " << queue_for_root.size() << std::endl;
-    // if (queue_for_bst.size() == 0) {
     std::cout << bst.root << *bst.root << std::endl;
     std::cout << root << *root << std::endl;
     std::cout << *this << std::endl;
     std::cout << bst << std::endl;
     return *this;
-    //     }
-    // }
 
     // root = bst.root;
 }
@@ -620,13 +505,14 @@ const BST& BST::operator++() const
         pnt_standin = queue[0];
     }
 }
-// const BST BST::operator++(int) const
-// {
-//     std::cout << "operator ++ right" << std::endl;
-//     Vector _v { *this };
-//     ++*this;
-//     return _v;
-// }
+const BST BST::operator++(int) const
+{
+
+    std::cout << "operator ++ right" << std::endl;
+    BST bst_temp { *this };
+    ++*this;
+    return bst_temp;
+}
 bool BST::delete_node(int value)
 {
     BST::Node** pointer_got_from_findnode { this->find_node(value) };
@@ -637,12 +523,22 @@ bool BST::delete_node(int value)
 
     // has two childs
     if ((*pointer_got_from_findnode)->right != nullptr && (*pointer_got_from_findnode)->left != nullptr) {
-        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
+
         BST::Node** pointer_to_successor { this->find_successor(value) };
         auto child_on_the_left { (*pointer_got_from_findnode)->left };
         auto child_on_the_right { (*pointer_got_from_findnode)->right };
         BST::Node** pointer_we_got_parents_to_successor { this->find_parrent((*pointer_to_successor)->value) };
 
+        if (value == root->value) {
+            // the node we want to delete is the root node
+            delete *pointer_got_from_findnode;
+            root = *pointer_to_successor;
+            (*pointer_to_successor)->left = child_on_the_left;
+            (*pointer_to_successor)->right = child_on_the_right;
+            (*pointer_we_got_parents_to_successor)->right = nullptr;
+            return 1;
+        }
+        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
         if ((*pointer_we_got_parents)->left != nullptr) {
             if ((*pointer_we_got_parents)->left->value == value) {
                 // node is on the left of the parent thus we should assign the left pointer of the parrent to the successor
@@ -655,13 +551,9 @@ bool BST::delete_node(int value)
 
                 (*pointer_to_successor)->left = child_on_the_left;
                 (*pointer_to_successor)->right = child_on_the_right;
-                std::cout << "in moshkele?2" << std::endl;
                 // inja segmentation dari midi
 
                 (*pointer_we_got_parents_to_successor)->right = nullptr;
-                std::cout << "info on the deleted stuff" << (*pointer_to_successor)->value << (*pointer_to_successor)->right->value << (*pointer_to_successor)->left->value << std::endl;
-                std::cout << "child on the left" << child_on_the_left << std::endl;
-                std::cout << "child on the right" << child_on_the_right << std::endl;
                 return 1;
             }
         }
@@ -684,13 +576,18 @@ bool BST::delete_node(int value)
     // has one child
     if ((*pointer_got_from_findnode)->right != nullptr || (*pointer_got_from_findnode)->left != nullptr) {
         // whether the child is on the right side or left side
-        BST::Node** pointer_we_got_parents { this->find_parrent(value) };
 
         if ((*pointer_got_from_findnode)->right != nullptr) {
             // child is on the right
-            std::cout << "in moshkele?1" << std::endl;
+            if (value == root->value) {
+                // the node we want to delete is the root node
+                delete *pointer_got_from_findnode;
+                auto pointer_to_child { (*pointer_got_from_findnode)->right };
+                root = pointer_to_child;
+                return 1;
+            }
+            BST::Node** pointer_we_got_parents { this->find_parrent(value) };
             if ((*pointer_we_got_parents)->left != nullptr) {
-                std::cout << "in moshkele?2" << std::endl;
                 if ((*pointer_we_got_parents)->left->value == value) {
                     // the node we want to delete is on the left side of the parent
                     // child on the right and the node on the left of the parent
@@ -712,10 +609,18 @@ bool BST::delete_node(int value)
                 }
             }
         } else {
+
             // the child is on the left
+            if (value == root->value) {
+                // the node we want to delete is the root node
+                delete *pointer_got_from_findnode;
+                auto pointer_to_child { (*pointer_got_from_findnode)->left };
+                root = pointer_to_child;
+                return 1;
+            }
+            BST::Node** pointer_we_got_parents { this->find_parrent(value) };
             std::cout << (*pointer_we_got_parents)->left->value << std::endl;
             if ((*pointer_we_got_parents)->left != nullptr) {
-                std::cout << "in moshkele?2" << std::endl;
                 if ((*pointer_we_got_parents)->left->value == value) {
                     // the node we want to delete is on the left side of the parent
                     // child on the left and the node on the left of the parent
@@ -734,6 +639,7 @@ bool BST::delete_node(int value)
                     auto pointer_to_child { (*pointer_got_from_findnode)->left };
                     delete *pointer_got_from_findnode;
                     (*pointer_we_got_parents)->right = pointer_to_child;
+                    return 1;
                 }
             }
         }
@@ -741,17 +647,15 @@ bool BST::delete_node(int value)
     // has no child
     if ((*pointer_got_from_findnode)->right == nullptr && (*pointer_got_from_findnode)->left == nullptr) {
         BST::Node** pointer_we_got_parents { this->find_parrent(value) };
-        std::cout << "value ha " << value << (*pointer_we_got_parents)->right->value << std::endl;
+        // std::cout << "value ha " << value << (*pointer_we_got_parents)->right->value << std::endl;
         if ((*pointer_we_got_parents)->right != nullptr) {
             if ((*pointer_we_got_parents)->right->value == value) {
-                std::cout << "in moshkele?2" << std::endl;
                 delete *pointer_got_from_findnode;
                 (*pointer_we_got_parents)->right = nullptr;
             }
         }
         if ((*pointer_we_got_parents)->left != nullptr) {
             if ((*pointer_we_got_parents)->left->value == value) {
-                std::cout << "in moshkele?1" << std::endl;
                 delete *pointer_got_from_findnode;
                 (*pointer_we_got_parents)->left = nullptr;
             }
@@ -759,4 +663,5 @@ bool BST::delete_node(int value)
 
         return 1;
     }
+    return 1;
 }

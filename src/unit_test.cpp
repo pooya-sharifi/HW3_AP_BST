@@ -381,30 +381,30 @@ TEST(HW3Test, TEST22)
     EXPECT_EQ(bst.get_root()->left->left->value, 5);
 }
 
-// TEST(HW3Test, TEST23)
-// {
-//     BST bst {};
-//     bst.add_node(25);
-//     bst.add_node(10);
-//     bst.add_node(50);
-//     bst.add_node(65);
-//     bst.add_node(60);
-//     bst.add_node(70);
-//     bst.add_node(5);
-//     bst.add_node(2);
-//     bst.add_node(7);
-//     bst.add_node(75);
-//     bst.add_node(20);
-//     bst.add_node(15);
-//     bst.add_node(22);
+TEST(HW3Test, TEST23)
+{
+    BST bst {};
+    bst.add_node(25);
+    bst.add_node(10);
+    bst.add_node(50);
+    bst.add_node(65);
+    bst.add_node(60);
+    bst.add_node(70);
+    bst.add_node(5);
+    bst.add_node(2);
+    bst.add_node(7);
+    bst.add_node(75);
+    bst.add_node(20);
+    bst.add_node(15);
+    bst.add_node(22);
 
-//     EXPECT_EQ(bst.length(), 13);
-//     EXPECT_TRUE(bst.delete_node(25)); // both children exist
-//     EXPECT_EQ(bst.length(), 12);
-//     EXPECT_EQ(bst.get_root()->value, 22);
-//     EXPECT_EQ(bst.get_root()->left->value, 10);
-//     EXPECT_EQ(bst.get_root()->left->right->right, nullptr);
-// }
+    EXPECT_EQ(bst.length(), 13);
+    EXPECT_TRUE(bst.delete_node(25)); // both children exist
+    EXPECT_EQ(bst.length(), 12);
+    EXPECT_EQ(bst.get_root()->value, 22);
+    EXPECT_EQ(bst.get_root()->left->value, 10);
+    EXPECT_EQ(bst.get_root()->left->right->right, nullptr);
+}
 
 TEST(HW3Test, TEST24)
 {
@@ -504,16 +504,19 @@ TEST(HW3Test, TEST30)
     EXPECT_EQ(bst2.get_root()->right->right->right->value, 61);
 }
 
-// TEST(HW3Test, TEST31) {
-//     BST bst1{5, 1, 10, 2, 8, 50, 4, 60};
-//     BST bst2{bst1++};
+TEST(HW3Test, TEST31)
+{
+    BST bst1 { 5, 1, 10, 2, 8, 50, 4, 60 };
+    BST bst2 { bst1++ };
 
-//     std::vector<int> values1;
-//     bst1.bfs([&values1](BST::Node*& node){values1.push_back(node->value);});
+    std::vector<int> values1;
+    bst1.bfs([&values1](BST::Node*& node) { values1.push_back(node->value); });
 
-//     std::vector<int> values2;
-//     bst2.bfs([&values2](BST::Node*& node){values2.push_back(node->value);});
+    std::vector<int> values2;
+    bst2.bfs([&values2](BST::Node*& node) { values2.push_back(node->value); });
 
-//     for(size_t i{}; i < values1.size(); i++)
-//         EXPECT_EQ(values2[i], values1[i]-1);
-// }
+    for (size_t i {}; i < values1.size(); i++) {
+        std::cout << "valye 2" << values2[i] << "value 1" << values1[i] << values1[i] - 1 << std::endl;
+        EXPECT_EQ(values2[i], values1[i] - 1);
+    }
+}

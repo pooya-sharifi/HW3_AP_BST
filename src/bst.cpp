@@ -44,8 +44,22 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
 
 std::ostream& operator<<(std::ostream& os, const BST::Node& node)
 {
-    os << "Vector: ";
-    os << node.value;
+
+    os << &node;
+
+    // os << std::setprecision(8);
+    // os << std::setw(20);
+    os.width(25);
+    os << "\t => Value: " << node.value;
+    // // os << std::setprecision(8);
+    // // os << std::setw(20);
+    os.width(25);
+    os << "\t left: " << node.left;
+    // // os << std::setprecision(8);
+    // // os << std::setw(20);
+    os.width(25);
+    os << "\t right: " << node.right;
+    os << std::endl;
     return os;
 }
 BST::Node*& BST::get_root()
@@ -147,7 +161,7 @@ size_t BST::length()
 std::ostream& operator<<(std::ostream& os, const BST& bst)
 {
     std::cout << "avalin chizi ke cout mishe" << std::endl;
-    os << "*******************************************************************************************" << std::endl;
+    os << std::string(80, '*') << std::endl;
     std::vector<BST::Node*> queue;
     std::vector<int> visited;
     // queue[0] = root->value;
@@ -161,36 +175,37 @@ std::ostream& operator<<(std::ostream& os, const BST& bst)
     while (flag == 0) {
 
         visited.push_back(queue[0]->value);
-        os << queue[0];
-        os << "             ";
-        os << "=>";
-        os << "value: ";
-        os << queue[0]->value;
+        // os << "             ";
+        // os << "\t=>";
+        // os << "value: ";
+        // os << queue[0]->value;
+        os << *queue[0];
         queue.erase(queue.begin());
-        os << "              ";
+        // os << "\t";
 
         if (pnt_standin->left != nullptr) {
-            os << "left:";
+            // os << "\tleft:";
             queue.push_back(pnt_standin->left);
-            os << pnt_standin->left;
-            os << "              ";
+            // os << pnt_standin->left;
+            // os << "\t";
         } else {
-            os << "left:";
-            os << 0;
-            os << "            ";
+            // os << "\tleft:";
+            // os << 0;
+            // os << "\t";
         }
         if (pnt_standin->right != nullptr) {
-            os << "right:";
+            // os << "\tright:";
             queue.push_back(pnt_standin->right);
-            os << pnt_standin->right;
-            os << "             " << std::endl;
+            // os << pnt_standin->right << std::endl;
+            // os << "\t" << std::endl;
         } else {
-            os << "right:";
-            os << 0;
-            os << "            " << std::endl;
+            // os << "\tright:";
+            // os << 0;
+            // os << "\t" << std::endl;
         }
         if (queue.size() == 0) {
-            os << "*******************************************************************************************" << std::endl;
+            os << "Binary Search tree size" << i + 1 << std::endl;
+            os << std::string(80, '*') << std::endl;
             return os;
             flag = 1;
         }

@@ -31,12 +31,12 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
     if (node.left != nullptr || node.left != 0) {
         left = new Node();
         *left = *node.left;
-        std::cout << "@@@@@@@@@@ left" << std::endl;
+        // std::cout << "@@@@@@@@@@ left" << std::endl;
     }
     if (node.right != nullptr || node.right != 0) {
         right = new Node();
         *right = *node.right;
-        std::cout << "@@@@@@@@ right" << std::endl;
+        // std::cout << "@@@@@@@@ right" << std::endl;
     }
 
     return *this;
@@ -44,22 +44,20 @@ BST::Node& BST::Node::operator=(const BST::Node& node)
 
 std::ostream& operator<<(std::ostream& os, const BST::Node& node)
 {
-
     os << &node;
-
+    os.setf(std::ios::left);
     // os << std::setprecision(8);
     // os << std::setw(20);
-    os.width(25);
-    os << "\t => Value: " << node.value;
-    // // os << std::setprecision(8);
+    // os.width(25);
+    os << "\t" << std::setw(10) << "=> Value: " << std::setw(10) << node.value;
+    // os << std::setprecision(15);
     // // os << std::setw(20);
-    os.width(25);
-    os << "\t left: " << node.left;
-    // // os << std::setprecision(8);
+    // os.width(25);
+    os << "\t" << std::setw(7) << " left: " << std::setw(10) << node.left;
+    // os << std::setprecision(15);
     // // os << std::setw(20);
-    os.width(25);
-    os << "\t right: " << node.right;
-    os << std::endl;
+    // os.width(25);
+    os << "\t" << std::setw(8) << " right: " << std::setw(10) << node.right << std::endl;
     return os;
 }
 BST::Node*& BST::get_root()
